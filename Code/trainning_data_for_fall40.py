@@ -49,7 +49,7 @@ valid_size = 0.1
 test_size = 0.1
 
 def normalize(data):
-  df = pd.DataFrame(data)
+  df = pd.DataFrame(data) 
   x = df.values #returns a numpy array
   min_max_scaler = preprocessing.MinMaxScaler()
   x_scaled = min_max_scaler.fit_transform(x)

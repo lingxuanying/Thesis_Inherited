@@ -17,7 +17,7 @@ pd.set_option('display.max_columns', None)
 import warnings
 warnings.filterwarnings("ignore")
 
-print('Generate Pickle of Similarity')
+print('Generate Pickle of Similarity...')
 
 criteria = sys.argv[1] # 90/40/MAP
 history_num = int(sys.argv[4]) #利用最近5次發生過IDH的透析算相似度

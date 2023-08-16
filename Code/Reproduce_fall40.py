@@ -19,6 +19,8 @@ from torch.utils.data import TensorDataset, DataLoader
 
 from sklearn.preprocessing import MinMaxScaler
 import pickle
+import sklearn
+print(torch.__version__)
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sn
@@ -97,7 +99,7 @@ temp_test = adjust_input(test[4], zero_list)
 info_train
 
 #%% Load Data
-output_file = sys.argv[2]
+output_file = sys.argv[3]
 training_file = sys.argv[1] + 'train_file.pickle'
 validation_file = sys.argv[1] + 'valid_file.pickle'
 testing_file = sys.argv[1]+'test_file.pickle'
@@ -134,9 +136,9 @@ t_test = adjust_input(test[3], zero_list)
 t_test = np.array(zero_norm(torch.from_numpy(t_test)))
 
 #%% Load unreliable table
-u_training_file = sys.argv[3]+'train_file.pickle'
-u_validation_file = sys.argv[3]+'valid_file.pickle'
-u_testing_file = sys.argv[3]+'test_file.pickle'
+u_training_file = sys.argv[2]+'train_file.pickle'
+u_validation_file = sys.argv[2]+'valid_file.pickle'
+u_testing_file = sys.argv[2]+'test_file.pickle'
 u_train = pickle.load(open(u_training_file, 'rb'))
 u_validate = pickle.load(open(u_validation_file, 'rb'))
 u_test = pickle.load(open(u_testing_file, 'rb'))
@@ -421,7 +423,7 @@ class GRUNet(nn.Module):
 
 """## Train function"""
 
-def train(x_train, learn_rate, hidden_dim=256, EPOCHS=20, model_type="GRU"):
+def train(x_train, learn_rate, hidden_dim=256, EPOCHS=25, model_type="GRU"):
     input_dim = feature_num
 
     #input_dim = next(iter(train_loader))[0].shape[2]
@@ -556,7 +558,7 @@ def train(x_train, learn_rate, hidden_dim=256, EPOCHS=20, model_type="GRU"):
     x = range(len(total_accuracy))  # 50x1 array between 0 and 2*pi
     ax.plot(x, total_accuracy)   # red line without marker
     ax.legend(['accuracy'])
-    plt.show()
+    #plt.show()
 
     fig, ax = plt.subplots()
     # plot the precision, recall, f1
@@ -564,14 +566,14 @@ def train(x_train, learn_rate, hidden_dim=256, EPOCHS=20, model_type="GRU"):
     ax.plot(x, total_recall, 'r')
     ax.plot(x, total_f1, 'g')
     ax.legend(['precision', 'recall', 'f1'])
-    plt.show()
+    #plt.show()
 
     fig, ax = plt.subplots()
     # plot the precision, recall, f1
     ax.plot(x, total_train_cost)
     ax.plot(x, total_valid_cost)
     ax.legend(['loss', 'valid_loss'])
-    plt.show()
+    #plt.show()
 
     model.load_state_dict(torch.load(output_file))
     return model
@@ -610,7 +612,7 @@ def evaluate(model, test_x, test_u, test_t, test_y, test_l, test_info, test_temp
     df_cm = pd.DataFrame(confusion, range(2), range(2))
     sn.set(font_scale=1.4) # for label size
     sn.heatmap(df_cm, annot=True, fmt='.20g') # font size
-    plt.show()
+    #plt.show()
     return outputs, targets, accuracy, recall
 
 t_train[336:361]
@@ -624,7 +626,8 @@ accuracy_l = []
 accuracy = 0
 recall = 0
 
-seed = 39
+seed = 180
+print(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 np.random.seed(seed)
@@ -633,4 +636,5 @@ torch.backends.cudnn.deterministic = True
 gru_model = train(x_train, lr, model_type="GRU")
 gru_outputs, targets, accuracy, recall = evaluate(gru_model, x_test, u_test, t_test, y_test, l_test, info_test, temp_test)
 accuracy_l.append(accuracy)
+
 

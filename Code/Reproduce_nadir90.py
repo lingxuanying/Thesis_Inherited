@@ -26,7 +26,8 @@ import random
 from math import e
 import math
 import sys
-print(sys.argv[0]) 
+import warnings
+warnings.filterwarnings("ignore")
 
 batch_size = 24
 feature_num = 9 #add similarity

@@ -98,7 +98,7 @@ temp_test = adjust_input(test[4], zero_list)
 info_train
 
 #%% Load Data
-output_file = sys.argv[2]
+output_file = sys.argv[3]
 training_file = sys.argv[1] + 'train_file.pickle'
 validation_file = sys.argv[1] + 'valid_file.pickle'
 testing_file = sys.argv[1]+'test_file.pickle'
@@ -135,9 +135,9 @@ t_test = adjust_input(test[3], zero_list)
 t_test = np.array(zero_norm(torch.from_numpy(t_test)))
 
 #%% Load unreliable table
-u_training_file = sys.argv[3]+'train_file.pickle'
-u_validation_file = sys.argv[3]+'valid_file.pickle'
-u_testing_file = sys.argv[3]+'test_file.pickle'
+u_training_file = sys.argv[2]+'train_file.pickle'
+u_validation_file = sys.argv[2]+'valid_file.pickle'
+u_testing_file = sys.argv[2]+'test_file.pickle'
 u_train = pickle.load(open(u_training_file, 'rb'))
 u_validate = pickle.load(open(u_validation_file, 'rb'))
 u_test = pickle.load(open(u_testing_file, 'rb'))

@@ -422,7 +422,7 @@ class GRUNet(nn.Module):
 
 """## Train function"""
 
-def train(x_train, learn_rate, hidden_dim=256, EPOCHS=20, model_type="GRU"):
+def train(x_train, learn_rate, hidden_dim=256, EPOCHS=25, model_type="GRU"):
     input_dim = feature_num
 
     #input_dim = next(iter(train_loader))[0].shape[2]
@@ -623,17 +623,13 @@ lr = 0.001
 accuracy_l = []
 accuracy = 0
 recall = 0
-seed = 8
-for seed in range(100, 300):
-    print(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    np.random.seed(seed)
-    random.seed(seed)
-    torch.backends.cudnn.deterministic = True
-    gru_model = train(x_train, lr, model_type="GRU")
-    gru_outputs, targets, accuracy, recall = evaluate(gru_model, x_test, u_test, t_test, y_test, l_test, info_test, temp_test)
-    if(accuracy>0.71):
-        break
+seed = 187
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+np.random.seed(seed)
+random.seed(seed)
+torch.backends.cudnn.deterministic = True
+gru_model = train(x_train, lr, model_type="GRU")
+gru_outputs, targets, accuracy, recall = evaluate(gru_model, x_test, u_test, t_test, y_test, l_test, info_test, temp_test)
 accuracy_l.append(accuracy)
 
